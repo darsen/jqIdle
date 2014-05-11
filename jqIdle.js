@@ -17,17 +17,17 @@
             o = $.extend(defaults, options);
         }
         var latestActivity = new Date();
-        var count = o.redirAfter / 1000;
-        var counter = setInterval(timer, 1000)
+        var count=o.redirAfter/1000;
+            var counter=setInterval(timer, 1000)
         resetOnUser();
         checkActivity();
 
 
         // Create timeout warning dialog
-        $('body').append('<div title="'
-                         + o.title
-                         + '" id="sessionTimeout-dialog"><p>'
-                         + o.message
+        $('body').append('<div title="' 
+                         + o.title 
+                         + '" id="sessionTimeout-dialog"><p>' 
+                         + o.message 
                          + '</p><span id="sessionTimeout-timer"></span>&nbsp;seconds.</div>');
         $('#sessionTimeout-dialog').dialog({
             autoOpen: false,
@@ -81,15 +81,17 @@
 
             }, 3000);
         }
+        
+        function timer()  {
+          count=count-1;
+          if (count <= 0)
+          {
+             clearInterval(counter);             
+             return;
+          }
 
-        function timer() {
-            count = count - 1;
-            if (count <= 0) {
-                clearInterval(counter);
-                return;
-            }
-            $("#sessionTimeout-timer").html(count);
-        }
+          $("#sessionTimeout-timer").html(count);
+       }
 
     };
 })(jQuery);

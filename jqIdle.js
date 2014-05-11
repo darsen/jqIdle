@@ -1,7 +1,8 @@
 (function ($) {
     jQuery.sessionTimeout = function (options) {
         var defaults = {
-            message: 'Your session is about to expire.',
+            title: 'Session Timeout',
+            message: 'Your session is about to expire in: ',
             keepAliveUrl: '/keep-alive',
             redirUrl: '/timed-out',
             logoutUrl: '/log-out',
@@ -15,14 +16,19 @@
         if (options) {
             o = $.extend(defaults, options);
         }
-
         var latestActivity = new Date();
+        var count = o.redirAfter / 1000;
+        var counter = setInterval(timer, 1000)
         resetOnUser();
         checkActivity();
 
 
         // Create timeout warning dialog
-        $('body').append('<div title="Session Timeout" id="sessionTimeout-dialog">' + o.message + '</div>');
+        $('body').append('<div title="'
+                         + o.title
+                         + '" id="sessionTimeout-dialog"><p>'
+                         + o.message
+                         + '</p><span id="sessionTimeout-timer"></span>&nbsp;seconds.</div>');
         $('#sessionTimeout-dialog').dialog({
             autoOpen: false,
             width: 400,
@@ -74,6 +80,15 @@
                 }
 
             }, 3000);
+        }
+
+        function timer() {
+            count = count - 1;
+            if (count <= 0) {
+                clearInterval(counter);
+                return;
+            }
+            $("#sessionTimeout-timer").html(count);
         }
 
     };
